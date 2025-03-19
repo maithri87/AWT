@@ -1,0 +1,114 @@
+
+
+import { Component } from '@angular/core';
+// import { CommonModule } from '@angular/common';
+// import { FormsModule } from '@angular/forms';
+// import { RouterOutlet } from '@angular/router';
+
+@Component({
+  selector: 'app-root',
+  standalone: false,
+  //imports: [CommonModule,FormsModule,RouterOutlet], 
+  templateUrl: './app.component.html',
+  //styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  students = [
+    { id: 1, name: 'Anu', branch: 'IT' },
+    { id: 2, name: 'John', branch: 'CSE' },
+    { id: 3, name: 'Renu', branch: 'IT' }
+  ];
+
+   selectedStudent: any = null;
+
+  addStudent(id: any, name: any, branch: any) {
+    this.students.push({
+      id: parseInt(id.value, 10),
+      name: name.value,
+      branch: branch.value
+    });
+
+    id.value = '';
+    name.value = '';
+    branch.value = '';
+  }
+
+  deleteStudent(id: any) {
+    this.students = this.students.filter(student => student.id !== id);
+  }
+
+  editStudent(student: any){
+    this.selectedStudent = {...student};
+  }
+  // updateStudent() {
+  //   const index = this.students.findIndex(student => student.id === this.selectedStudent.id);
+  //   if (index !== -1) {
+  //     this.students[index] = { ...this.selectedStudent };
+  //   }
+  //   this.selectedStudent = null; 
+  // }
+  
+}
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+  <title>demo app</title>
+</head>
+<body>
+  <!-- <h1>Student Management System</h1> -->
+ <div>
+  <label>ID</label>
+  <input type="text" #id placeholder="Enter Student ID">
+
+  <label>Name</label>
+  <input type="text" #name placeholder="Enter Student Name">
+
+  <label>Branch</label>
+  <input type="text" #branch placeholder="Enter Student Branch">
+
+  <button type="button" (click)="addStudent(id, name, branch)">Add Student</button>
+</div>
+
+<table border="1">
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Branch</th>
+    <!-- <th colspan="3">Actions</th> -->
+  </tr>
+
+  <tr *ngFor="let student of students">
+    <td>{{ student.id }}</td>
+    <td>{{ student.name }}</td>
+    <td>{{ student.branch }}</td>
+    <td>
+      <button class="btn btn-primary" (click)="editStudent(student)">Edit</button>
+      <button class="btn btn-danger" (click)="deleteStudent(student.id)">Delete</button>
+    </td>
+  </tr>
+</table>
+<!-- <div *ngIf="selectedStudent">
+  <h3>Edit Student</h3>
+  <form>
+    <label>ID</label>
+    <input type="text" [(ngModel)]="selectedStudent.id" disabled>
+
+    <label>Name</label>
+    <input type="text" [(ngModel)]="selectedStudent.name">
+
+    <label>Branch</label>
+    <input type="text" [(ngModel)]="selectedStudent.branch"> -->
+
+   <!-- <button type="button" (click)="updateStudent()">Update</button>  -->
+<!-- </form>
+</div>  -->
+</body>
+</html>
