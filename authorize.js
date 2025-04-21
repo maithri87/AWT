@@ -73,6 +73,31 @@ app.get("/student/:name",(req,res)=>{
       })
     .catch((error)=>res.status(400).json({"msg":"error in status"+error}))
   })
+app.put("/student/:name", authenticateToken, (req, res) => {
+    const studentName = req.params.name;
+    const updatedData = req.body;
+
+    student.findOneAndUpdate(
+        { name: studentName },
+        { $set: updatedData },
+        { new: true } // returns the updated document
+    )
+    .then((updatedStudent) => {
+        if (updatedStudent) {
+            res.status(200).json({
+                message: "Student updated successfully",
+                student: updatedStudent
+            });
+        } else {
+            res.status(404).json({ message: "Student not found" });
+        }
+    })
+    .catch((error) => {
+        res.status(500).json({ message: "Error updating student", error: error.message });
+    });
+});
+
+
 function authenticateToken(req, res, next) {
     const authHeader = req.headers['authorization'];
     if (!authHeader) {
